@@ -12,3 +12,9 @@
 <a href="https://github.com/c-a-p-engineer">
   <img align="left" height="170px" src="https://github-readme-stats.vercel.app/api/top-langs/?username=c-a-p-engineer&layout=compact" />
 </a>
+
+<a href="https://github.com/c-a-p-engineer">
+  <img align="left" height="300px" src="https://github-profile-trophy.vercel.app/?username=c-a-p-engineer&column=4" />
+</a>
+
+[![GitHub Streak](http://github-readme-streak-stats.herokuapp.com?user=c-a-p-engineer&locale=ja)](https://git.io/streak-stats)
