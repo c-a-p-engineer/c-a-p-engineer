@@ -137,14 +137,6 @@ flowchart LR
 
 - [こぴぺたんログ](https://c-a-p-engineer.github.io/) — 開発、AI活用、自動化の実践記録
 - [技術書典 サークルページ](https://techbookfest.org/organization/5zdy9h5eA5kDzByP9rserV) — AI協働開発と実務ノウハウを技術書として公開
-- [IPA-exam-study](https://github.com/c-a-p-engineer/IPA-exam-study) — 情報処理技術者試験の学習資産
-
-## GitHub activity
-
-<p align="center">
-  <img width="49%" src="https://github-readme-stats.vercel.app/api?username=c-a-p-engineer&show_icons=true&hide_border=true&bg_color=0D1117&title_color=FF4F9A&text_color=C9D1D9&icon_color=58A6FF" alt="GitHub stats" />
-  <img width="49%" src="https://github-readme-streak-stats.herokuapp.com/?user=c-a-p-engineer&hide_border=true&background=0D1117&ring=FF4F9A&fire=FF4F9A&currStreakLabel=58A6FF&sideLabels=C9D1D9&dates=8B949E&currStreakNum=F0F6FC&sideNums=F0F6FC" alt="GitHub streak" />
-</p>
 
 ---
 
