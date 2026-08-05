@@ -1,0 +1,62 @@
+<svg width="1200" height="360" viewBox="0 0 1200 360" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">c-a-p-engineer profile banner</title>
+  <desc id="desc">AI-driven software engineering, automation, and creative tooling.</desc>
+  <defs>
+    <linearGradient id="bg" x1="40" y1="20" x2="1160" y2="340" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#070B14"/>
+      <stop offset="0.55" stop-color="#10182A"/>
+      <stop offset="1" stop-color="#170C21"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="225" y1="85" x2="980" y2="275" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#58A6FF"/>
+      <stop offset="0.48" stop-color="#A371F7"/>
+      <stop offset="1" stop-color="#FF4F9A"/>
+    </linearGradient>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M48 0H0V48" stroke="#8B949E" stroke-opacity="0.09"/>
+    </pattern>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="360" rx="28" fill="url(#bg)"/>
+  <rect width="1200" height="360" rx="28" fill="url(#grid)"/>
+
+  <circle cx="1060" cy="72" r="104" fill="#FF4F9A" fill-opacity="0.08"/>
+  <circle cx="1090" cy="306" r="150" fill="#58A6FF" fill-opacity="0.07"/>
+  <circle cx="96" cy="326" r="130" fill="#A371F7" fill-opacity="0.07"/>
+
+  <path d="M66 76H240" stroke="url(#accent)" stroke-width="4" stroke-linecap="round"/>
+  <path d="M960 284H1134" stroke="url(#accent)" stroke-width="4" stroke-linecap="round"/>
+
+  <g opacity="0.75">
+    <rect x="72" y="104" width="12" height="12" rx="3" fill="#58A6FF"/>
+    <rect x="94" y="104" width="12" height="12" rx="3" fill="#A371F7"/>
+    <rect x="116" y="104" width="12" height="12" rx="3" fill="#FF4F9A"/>
+  </g>
+
+  <text x="72" y="178" fill="#F0F6FC" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="62" font-weight="800" letter-spacing="2">
+    C-A-P ENGINEER
+  </text>
+  <rect x="72" y="198" width="740" height="5" rx="2.5" fill="url(#accent)" filter="url(#glow)"/>
+  <text x="72" y="244" fill="#C9D1D9" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="23" font-weight="600" letter-spacing="1.7">
+    AI-DRIVEN SOFTWARE · AUTOMATION · CREATIVE TOOLING
+  </text>
+  <text x="72" y="286" fill="#8B949E" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="500" letter-spacing="1.2">
+    DESIGN → SPECIFY → AUTOMATE → SHIP
+  </text>
+
+  <g transform="translate(914 112)">
+    <path d="M0 34L36 0H150L186 34V128L150 162H36L0 128V34Z" stroke="url(#accent)" stroke-width="3" fill="#0D1117" fill-opacity="0.62"/>
+    <path d="M52 52H134V110H52V52Z" stroke="#58A6FF" stroke-width="3"/>
+    <path d="M38 66H24M38 82H18M38 98H24M148 66H162M148 82H168M148 98H162" stroke="#FF4F9A" stroke-width="3" stroke-linecap="round"/>
+    <path d="M70 72L86 88L70 104M102 104H122" stroke="#F0F6FC" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <rect x="0.75" y="0.75" width="1198.5" height="358.5" rx="27.25" stroke="url(#accent)" stroke-opacity="0.38" stroke-width="1.5"/>
+</svg>
