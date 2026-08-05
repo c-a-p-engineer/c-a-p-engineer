@@ -1,0 +1,71 @@
+<svg width="1200" height="340" viewBox="0 0 1200 340" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">From idea to release</title>
+  <desc id="desc">A four-stage engineering workflow: discover, define, build, and ship.</desc>
+  <defs>
+    <linearGradient id="bg" x1="20" y1="10" x2="1180" y2="330" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#070B14"/>
+      <stop offset="0.52" stop-color="#10182A"/>
+      <stop offset="1" stop-color="#170C21"/>
+    </linearGradient>
+    <linearGradient id="line" x1="100" y1="0" x2="1100" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#58A6FF"/>
+      <stop offset="0.5" stop-color="#A371F7"/>
+      <stop offset="1" stop-color="#FF4F9A"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000000" flood-opacity="0.34"/>
+    </filter>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" stroke="#8B949E" stroke-opacity="0.06"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="340" rx="28" fill="url(#bg)"/>
+  <rect width="1200" height="340" rx="28" fill="url(#grid)"/>
+  <rect x="0.75" y="0.75" width="1198.5" height="338.5" rx="27.25" stroke="url(#line)" stroke-opacity="0.32" stroke-width="1.5"/>
+
+  <text x="56" y="58" fill="#F0F6FC" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="28" font-weight="800" letter-spacing="1.2">FROM IDEA TO RELEASE</text>
+  <text x="56" y="86" fill="#8B949E" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="16" font-weight="600" letter-spacing="0.8">DECISIONS FIRST · AUTOMATION SECOND · REPEATABLE DELIVERY</text>
+
+  <path d="M176 206H1024" stroke="url(#line)" stroke-width="4" stroke-linecap="round" opacity="0.75"/>
+
+  <g filter="url(#shadow)">
+    <rect x="54" y="120" width="246" height="158" rx="22" fill="#0D1727" stroke="#58A6FF" stroke-width="2"/>
+    <circle cx="89" cy="155" r="17" fill="#58A6FF" fill-opacity="0.18" stroke="#58A6FF"/>
+    <text x="89" y="161" text-anchor="middle" fill="#58A6FF" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15" font-weight="800">01</text>
+    <text x="119" y="163" fill="#F0F6FC" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="25" font-weight="800">DISCOVER</text>
+    <text x="82" y="208" fill="#C9D1D9" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="600">Problem · Context</text>
+    <text x="82" y="239" fill="#8B949E" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15">Find the real constraint.</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="336" y="120" width="246" height="158" rx="22" fill="#151326" stroke="#A371F7" stroke-width="2"/>
+    <circle cx="371" cy="155" r="17" fill="#A371F7" fill-opacity="0.18" stroke="#A371F7"/>
+    <text x="371" y="161" text-anchor="middle" fill="#A371F7" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15" font-weight="800">02</text>
+    <text x="401" y="163" fill="#F0F6FC" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="25" font-weight="800">DEFINE</text>
+    <text x="364" y="208" fill="#C9D1D9" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="600">Scope · Spec · Tasks</text>
+    <text x="364" y="239" fill="#8B949E" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15">Turn intent into artifacts.</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="618" y="120" width="246" height="158" rx="22" fill="#211221" stroke="#FF4F9A" stroke-width="2"/>
+    <circle cx="653" cy="155" r="17" fill="#FF4F9A" fill-opacity="0.18" stroke="#FF4F9A"/>
+    <text x="653" y="161" text-anchor="middle" fill="#FF4F9A" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15" font-weight="800">03</text>
+    <text x="683" y="163" fill="#F0F6FC" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="25" font-weight="800">BUILD</text>
+    <text x="646" y="208" fill="#C9D1D9" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="600">AI · Code · Review</text>
+    <text x="646" y="239" fill="#8B949E" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15">Accelerate, then verify.</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="900" y="120" width="246" height="158" rx="22" fill="#10211C" stroke="#3FB950" stroke-width="2"/>
+    <circle cx="935" cy="155" r="17" fill="#3FB950" fill-opacity="0.18" stroke="#3FB950"/>
+    <text x="935" y="161" text-anchor="middle" fill="#3FB950" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15" font-weight="800">04</text>
+    <text x="965" y="163" fill="#F0F6FC" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="25" font-weight="800">SHIP</text>
+    <text x="928" y="208" fill="#C9D1D9" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="600">Test · CI · Release</text>
+    <text x="928" y="239" fill="#8B949E" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15">Deliver and learn.</text>
+  </g>
+
+  <circle cx="318" cy="206" r="8" fill="#7A65D9"/>
+  <circle cx="600" cy="206" r="8" fill="#D15AA8"/>
+  <circle cx="882" cy="206" r="8" fill="#7D9974"/>
+</svg>
