@@ -7,7 +7,7 @@
     <img src="https://img.shields.io/badge/BLOG-0D1117?style=for-the-badge&logo=githubpages&logoColor=58A6FF" alt="Blog" />
   </a>
   <a href="https://techbookfest.org/organization/5zdy9h5eA5kDzByP9rserV">
-    <img src="https://img.shields.io/badge/TECHBOOKFEST-0D1117?style=for-the-badge&logo=bookstack&logoColor=FF4F9A" alt="TechBookFest" />
+    <img src="https://img.shields.io/badge/TECHBOOKFEST-0D1117?style=for-the-badge&logo=bookstack&logoColor=A371F7" alt="TechBookFest" />
   </a>
   <a href="https://x.com/c_a_p_engineer">
     <img src="https://img.shields.io/badge/@c__a__p__engineer-0D1117?style=for-the-badge&logo=x&logoColor=F0F6FC" alt="X" />
@@ -23,48 +23,48 @@
 
 > ### 書くコードを減らし、仕組みを増やす。
 >
-> 問題を整理し、判断を仕様へ落とし込み、AIとCIを使って再現可能な成果物として出荷します。  
-> 実装速度だけではなく、**設計・検証・運用まで含めた開発システム**を作ります。
+> 曖昧な要求を仕様へ落とし、AIで実装を加速し、テストとCIで現実を確認して出荷する。  
+> **コード単体ではなく、成果物が再現可能に生まれる「開発システム」そのものを作ります。**
 
 <br />
 
-## 01 — Engineering focus
+## 01 / What I build
 
 <table>
   <tr>
     <td width="33%" valign="top">
-      <sub>01 / DECIDE</sub>
-      <h3>AI-driven development</h3>
-      <p>AIへ実装を委譲しつつ、要件・設計・判断・レビューの責任は人間が持つ開発フローを設計します。</p>
+      <sub>AI × ENGINEERING</sub>
+      <h3>Decision-driven development</h3>
+      <p>AIにコードを書かせるだけではなく、要件・仕様・レビュー・検証まで含めて、AIが働ける開発フローを設計します。</p>
     </td>
     <td width="33%" valign="top">
-      <sub>02 / AUTOMATE</sub>
-      <h3>Reproducible systems</h3>
-      <p>Docker、Dev Container、GitHub Actionsを軸に、環境差分と反復作業を減らします。</p>
+      <sub>AUTOMATION</sub>
+      <h3>Repeatable pipelines</h3>
+      <p>Docker、Dev Container、GitHub Actionsを使い、手作業・環境差分・「自分のPCだけ動く」を減らします。</p>
     </td>
     <td width="33%" valign="top">
-      <sub>03 / CREATE</sub>
-      <h3>Creative engineering</h3>
-      <p>動画、スライド、技術書、ゲーム、教材を、コードと生成AIを組み合わせて制作します。</p>
+      <sub>CREATIVE CODE</sub>
+      <h3>Software that creates</h3>
+      <p>動画、スライド、技術書、ゲーム、教材まで。生成AIとコードを組み合わせ、制作工程そのものをソフトウェア化します。</p>
     </td>
   </tr>
 </table>
 
 <br />
 
-## 02 — Selected builds
+## 02 / Featured systems
 
 <table>
   <tr>
     <td width="50%" valign="top">
       <sub>VIDEO AUTOMATION</sub>
       <h3><a href="https://github.com/c-a-p-engineer/zundamotion">Zundamotion</a></h3>
-      <p>YAML台本から、VOICEVOX音声・字幕・画像・BGM・効果音を合成してMP4を生成する動画制作パイプライン。</p>
+      <p>YAML台本からVOICEVOX音声・字幕・画像・BGM・効果音を合成し、MP4まで生成する動画制作パイプライン。</p>
       <p><code>Python</code> <code>FFmpeg</code> <code>VOICEVOX</code> <code>Docker</code></p>
       <p>
-        <a href="https://c-a-p-engineer.github.io/zundamotion/"><strong>View demo →</strong></a>
-        &nbsp;·&nbsp;
-        <a href="https://github.com/c-a-p-engineer/zundamotion"><strong>Repository →</strong></a>
+        <a href="https://c-a-p-engineer.github.io/zundamotion/"><strong>DEMO →</strong></a>
+        &nbsp;&nbsp;
+        <a href="https://github.com/c-a-p-engineer/zundamotion"><strong>CODE →</strong></a>
       </p>
     </td>
     <td width="50%" valign="top">
@@ -72,19 +72,19 @@
       <h3><a href="https://github.com/c-a-p-engineer/SlideForge">SlideForge</a></h3>
       <p>AIが編集しやすいHTMLスライドを、PNG・PDF・PPTXへ変換するテンプレート兼レンダリング基盤。</p>
       <p><code>Node.js</code> <code>Playwright</code> <code>HTML/CSS</code> <code>PPTX</code></p>
-      <p><a href="https://github.com/c-a-p-engineer/SlideForge"><strong>Repository →</strong></a></p>
+      <p><a href="https://github.com/c-a-p-engineer/SlideForge"><strong>CODE →</strong></a></p>
     </td>
   </tr>
   <tr>
     <td width="50%" valign="top">
       <sub>LEARNING EXPERIENCE</sub>
       <h3><a href="https://github.com/c-a-p-engineer/kids-learning">kids-learning</a></h3>
-      <p>スマートフォンやタブレットで、図形・記憶・数量・そろばん・時計・書字を段階的に学べるブラウザ教材。</p>
+      <p>スマートフォンやタブレットで、図形・記憶・数量・時計・書字などを段階的に学べるブラウザ教材。</p>
       <p><code>TypeScript</code> <code>Mobile First</code> <code>Accessibility</code> <code>GitHub Pages</code></p>
       <p>
-        <a href="https://c-a-p-engineer.github.io/kids-learning/"><strong>Play →</strong></a>
-        &nbsp;·&nbsp;
-        <a href="https://github.com/c-a-p-engineer/kids-learning"><strong>Repository →</strong></a>
+        <a href="https://c-a-p-engineer.github.io/kids-learning/"><strong>PLAY →</strong></a>
+        &nbsp;&nbsp;
+        <a href="https://github.com/c-a-p-engineer/kids-learning"><strong>CODE →</strong></a>
       </p>
     </td>
     <td width="50%" valign="top">
@@ -93,78 +93,68 @@
       <p>流れ続けるログから検索条件に一致する行を見つける、スマートフォン向け高速探索ゲーム。</p>
       <p><code>JavaScript</code> <code>Game Design</code> <code>Mobile UI</code> <code>GitHub Pages</code></p>
       <p>
-        <a href="https://c-a-p-engineer.github.io/24365-it-warrior/"><strong>Play →</strong></a>
-        &nbsp;·&nbsp;
-        <a href="https://github.com/c-a-p-engineer/24365-it-warrior"><strong>Repository →</strong></a>
+        <a href="https://c-a-p-engineer.github.io/24365-it-warrior/"><strong>PLAY →</strong></a>
+        &nbsp;&nbsp;
+        <a href="https://github.com/c-a-p-engineer/24365-it-warrior"><strong>CODE →</strong></a>
       </p>
     </td>
   </tr>
 </table>
 
-### More tools & templates
-
-[`ai-editor-playbook`](https://github.com/c-a-p-engineer/ai-editor-playbook)
-· [`VivliostyleTemplate`](https://github.com/c-a-p-engineer/VivliostyleTemplate)
-· [`codex-phaser-template`](https://github.com/c-a-p-engineer/codex-phaser-template)
-· [`skill-sheet-maker`](https://github.com/c-a-p-engineer/skill-sheet-maker)
-· [`ResponsiveCapture`](https://github.com/c-a-p-engineer/ResponsiveCapture)
+<details>
+  <summary><strong>More tools & templates</strong></summary>
+  <br />
+  <a href="https://github.com/c-a-p-engineer/ai-editor-playbook">ai-editor-playbook</a>
+  · <a href="https://github.com/c-a-p-engineer/VivliostyleTemplate">VivliostyleTemplate</a>
+  · <a href="https://github.com/c-a-p-engineer/codex-phaser-template">codex-phaser-template</a>
+  · <a href="https://github.com/c-a-p-engineer/skill-sheet-maker">skill-sheet-maker</a>
+  · <a href="https://github.com/c-a-p-engineer/ResponsiveCapture">ResponsiveCapture</a>
+</details>
 
 <br />
 
-## 03 — Build system
+## 03 / How I ship
 
 <p align="center">
-  <img src="./assets/build-system.svg" alt="Discover, define, build, and ship engineering workflow" width="100%" />
+  <img src="./assets/build-system.svg" alt="Intent, specification, AI-assisted implementation, verification, and shipping pipeline" width="100%" />
 </p>
 
 <table>
   <tr>
     <td width="50%" valign="top">
-      <strong>Problem first</strong><br />
-      ツールや流行から始めず、解くべき問題と制約を先に特定する。
+      <strong>Problem before tool</strong><br />
+      流行やモデル名から始めず、まず目的・制約・完成条件を決める。
     </td>
     <td width="50%" valign="top">
       <strong>Specs are artifacts</strong><br />
-      README・仕様・タスクを、実装前から成果物として扱う。
+      README・仕様・タスク・検証条件も、コードと同じく成果物として扱う。
     </td>
   </tr>
   <tr>
     <td width="50%" valign="top">
-      <strong>AI accelerates, humans decide</strong><br />
-      AIは実装速度を上げ、人間は判断・検証・説明責任を担う。
+      <strong>AI accelerates execution</strong><br />
+      実装はAIで高速化する。判断・責任・受け入れ判定は人間が持つ。
     </td>
     <td width="50%" valign="top">
-      <strong>Repeatability over heroics</strong><br />
-      個人技より、再現性・自動化・運用性・費用対効果を優先する。
+      <strong>Evidence before “done”</strong><br />
+      「できた」では終わらせず、テスト・差分・生成物・CIで確認してから出荷する。
     </td>
   </tr>
 </table>
 
 <br />
 
-## 04 — Toolchain
-
-**LANGUAGES**
+## 04 / Toolchain
 
 <p>
   <img src="https://img.shields.io/badge/Python-0D1117?style=flat-square&logo=python&logoColor=58A6FF" alt="Python" />
   <img src="https://img.shields.io/badge/TypeScript-0D1117?style=flat-square&logo=typescript&logoColor=58A6FF" alt="TypeScript" />
   <img src="https://img.shields.io/badge/JavaScript-0D1117?style=flat-square&logo=javascript&logoColor=F7DF1E" alt="JavaScript" />
   <img src="https://img.shields.io/badge/PHP-0D1117?style=flat-square&logo=php&logoColor=A371F7" alt="PHP" />
-</p>
-
-**PLATFORM & AUTOMATION**
-
-<p>
   <img src="https://img.shields.io/badge/Docker-0D1117?style=flat-square&logo=docker&logoColor=58A6FF" alt="Docker" />
   <img src="https://img.shields.io/badge/Dev_Containers-0D1117?style=flat-square&logo=visualstudiocode&logoColor=58A6FF" alt="Dev Containers" />
   <img src="https://img.shields.io/badge/GitHub_Actions-0D1117?style=flat-square&logo=githubactions&logoColor=58A6FF" alt="GitHub Actions" />
   <img src="https://img.shields.io/badge/AWS-0D1117?style=flat-square&logo=amazonwebservices&logoColor=FF9900" alt="AWS" />
-</p>
-
-**MEDIA & CREATIVE TOOLING**
-
-<p>
   <img src="https://img.shields.io/badge/FFmpeg-0D1117?style=flat-square&logo=ffmpeg&logoColor=3FB950" alt="FFmpeg" />
   <img src="https://img.shields.io/badge/Playwright-0D1117?style=flat-square&logo=playwright&logoColor=3FB950" alt="Playwright" />
   <img src="https://img.shields.io/badge/Phaser-0D1117?style=flat-square&logo=phaser&logoColor=FF4F9A" alt="Phaser" />
@@ -173,19 +163,19 @@
 
 <br />
 
-## 05 — Writing & knowledge sharing
+## 05 / Writing
 
 <table>
   <tr>
     <td width="50%" valign="top">
       <sub>DEVELOPMENT LOG</sub>
       <h3><a href="https://c-a-p-engineer.github.io/">こぴぺたんログ</a></h3>
-      <p>開発、生成AI、自動化、試行錯誤を、再利用可能な知識として記録しています。</p>
+      <p>開発、生成AI、自動化、失敗と改善を、再利用できる知識として記録しています。</p>
     </td>
     <td width="50%" valign="top">
       <sub>TECHNICAL BOOKS</sub>
       <h3><a href="https://techbookfest.org/organization/5zdy9h5eA5kDzByP9rserV">技術書典</a></h3>
-      <p>AI協働開発と実務で得たノウハウを、技術書として構成・出版しています。</p>
+      <p>AI協働開発や実務で得た知見を、試して再現できる形にして技術書へまとめています。</p>
     </td>
   </tr>
 </table>
@@ -193,9 +183,9 @@
 ---
 
 <p align="center">
-  <strong>DESIGN → SPECIFY → AUTOMATE → SHIP</strong><br />
-  <sub>
-    Direction and judgment by the engineer.<br />
-    Composition and implementation with AI.
-  </sub>
+  <code>INTENT</code> → <code>SPEC</code> → <code>BUILD WITH AI</code> → <code>VERIFY</code> → <code>SHIP</code>
+</p>
+
+<p align="center">
+  <sub>Build less by hand. Build more systems.</sub>
 </p>
