@@ -1,16 +1,27 @@
 <p align="center">
-  <img src="./assets/profile-banner.svg" alt="c-a-p-engineer — AI-driven software, automation, and creative tooling" width="100%" />
+  <img src="./assets/profile-banner.svg" alt="c-a-p-engineer — AI-assisted software development, automation, and creative tooling" width="100%" />
+</p>
+
+<h1 align="center">c-a-p-engineer — AI-assisted Software Engineer</h1>
+
+<p align="center">
+  AI協働開発・開発自動化・生成AI活用を中心に、Python / TypeScript / Docker / GitHub Actions / FFmpeg などを使って、
+  <strong>再現可能な開発・制作パイプライン</strong>を設計・実装しています。
+</p>
+
+<p align="center">
+  Developer tools, AI-assisted development, automation, video generation, document engineering, browser applications, and learning tools.
 </p>
 
 <p align="center">
   <a href="https://c-a-p-engineer.github.io/">
-    <img src="https://img.shields.io/badge/BLOG-0D1117?style=for-the-badge&logo=githubpages&logoColor=58A6FF" alt="Blog" />
+    <img src="https://img.shields.io/badge/BLOG-0D1117?style=for-the-badge&logo=githubpages&logoColor=58A6FF" alt="c-a-p-engineer development blog" />
   </a>
   <a href="https://techbookfest.org/organization/5zdy9h5eA5kDzByP9rserV">
-    <img src="https://img.shields.io/badge/TECHBOOKFEST-0D1117?style=for-the-badge&logo=bookstack&logoColor=A371F7" alt="TechBookFest" />
+    <img src="https://img.shields.io/badge/TECHBOOKFEST-0D1117?style=for-the-badge&logo=bookstack&logoColor=A371F7" alt="c-a-p-engineer technical books on TechBookFest" />
   </a>
   <a href="https://x.com/c_a_p_engineer">
-    <img src="https://img.shields.io/badge/@c__a__p__engineer-0D1117?style=for-the-badge&logo=x&logoColor=F0F6FC" alt="X" />
+    <img src="https://img.shields.io/badge/@c__a__p__engineer-0D1117?style=for-the-badge&logo=x&logoColor=F0F6FC" alt="c-a-p-engineer on X" />
   </a>
   <img src="https://komarev.com/ghpvc/?username=c-a-p-engineer&style=for-the-badge&color=ff4f9a&label=PROFILE+VIEWS" alt="Profile views" />
 </p>
@@ -169,8 +180,8 @@
   <tr>
     <td width="50%" valign="top">
       <sub>DEVELOPMENT LOG</sub>
-      <h3><a href="https://c-a-p-engineer.github.io/">こぴぺたんログ</a></h3>
-      <p>開発、生成AI、自動化、失敗と改善を、再利用できる知識として記録しています。</p>
+      <h3><a href="https://c-a-p-engineer.github.io/">こぴぺたんログ — 開発・生成AI・自動化ブログ</a></h3>
+      <p>AI協働開発、生成AI、Docker、GitHub Actions、自動化、開発ツール、失敗と改善を、再利用できる技術知識として記録しています。</p>
     </td>
     <td width="50%" valign="top">
       <sub>TECHNICAL BOOKS</sub>
