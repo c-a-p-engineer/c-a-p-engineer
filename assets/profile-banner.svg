@@ -1,6 +1,6 @@
 <svg width="1200" height="360" viewBox="0 0 1200 360" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
-  <title id="title">c-a-p-engineer — AI-driven engineering</title>
-  <desc id="desc">A dark technical profile banner showing a pipeline from intent to shipped software.</desc>
+  <title id="title">c-a-p-engineer — engineer the workflow, ship the result</title>
+  <desc id="desc">Brand banner for c-a-p-engineer with the message Engineer the workflow. Ship the result.</desc>
   <defs>
     <linearGradient id="bg" x1="40" y1="20" x2="1160" y2="340" gradientUnits="userSpaceOnUse">
       <stop stop-color="#05070C"/>
@@ -37,7 +37,7 @@
     <rect x="0" y="150" width="640" height="5" rx="2.5" fill="url(#accent)"/>
     <rect x="0" y="148" width="640" height="9" rx="4.5" fill="url(#accent)" opacity="0.18" filter="url(#softGlow)"/>
 
-    <text x="0" y="195" fill="#C9D1D9" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="21" font-weight="650" letter-spacing="0.8">AI-DRIVEN SOFTWARE · AUTOMATION · CREATIVE TOOLING</text>
+    <text x="0" y="195" fill="#C9D1D9" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="21" font-weight="650" letter-spacing="0.8">SOFTWARE SYSTEMS · AUTOMATION · CREATIVE TOOLING</text>
     <text x="0" y="235" fill="#7D8590" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="16" font-weight="600">intent → spec → build → verify → ship</text>
   </g>
 
