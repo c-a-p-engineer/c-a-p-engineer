@@ -1,23 +1,23 @@
-# AIエージェントのRoutingを軽量化するReasoning Indexと、計画を捨てられるLiving Roadmap
+# AIエージェントのRoutingを軽量化するReasoning Indexと、見直せる改善ロードマップ
 
 AIエージェントへSkill、Memory、Ruleを追加していくと、知識量だけでなく「何を読むか決めるための情報」も増えます。
 
 この文書は、次の二つを再現できる形でまとめた実装ノートです。
 
-1. **Compact Reasoning Index**  
+1. **軽量Reasoning Index（Compact Reasoning Index）**  
    大きなSkill / Memory Registryを毎回全文展開せず、候補選択だけを小さな派生Indexで行う。
-2. **Living Roadmap**  
-   自己改善Featureを固定Phaseで完走せず、実測やModel / Host / Toolの変化で計画そのものを再導出する。
+2. **見直せる改善ロードマップ**  
+   自己改善の機能を決めた段階どおりに消化するのではなく、実測結果やModel / 実行環境（Host） / Toolの変化に応じて、計画そのものを組み直す。
 
-実運用では、Skill routing surfaceを **38,533文字 → 10,657文字（72.3%減）**、Memory routing surfaceを **33,301文字 → 6,678文字（79.9%減）** まで縮小しました。
+実運用では、Routing時に最初に読む情報量を、Skill側で **38,533文字 → 10,657文字（72.3%減）**、Memory側で **33,301文字 → 6,678文字（79.9%減）** まで減らしました。
 
-この数字はtokenやlatencyの改善率ではありません。静的なrouting inputの文字数比較です。
+この数字は、Token数やLatencyが同じ割合で改善したという意味ではありません。比較しているのは、Routing時に最初に読むテキストの文字数です。
 
 ---
 
 ## 1. 解きたい問題
 
-Agent Harnessが次の構造を持っているとします。
+AIエージェントを動かす周辺の仕組み（Agent Harness）が、次の構造を持っているとします。
 
 ```text
 Bootstrap
@@ -33,11 +33,11 @@ Memory Index
 Memory bodies
 ```
 
-Skill本文を必要時だけ読むようにしても、Skill Registry自体が大きくなると、Fast Routerで閉じないTaskのたびに大きなRegistryを読むことになります。
+Skill本文を必要時だけ読むようにしても、Skill Registry自体が大きくなると、Fast Routerだけでは必要なSkillを決められないタスクのたびに、大きなRegistryを読むことになります。
 
 ここでやりたいことはSemantic Searchの最大化ではありません。
 
-**正規情報源を保ったまま、最初の候補探索面だけを小さくすること**です。
+**正規の情報源を保ったまま、候補を探すために最初に読む情報量だけを小さくすること**です。
 
 ---
 
@@ -45,29 +45,29 @@ Skill本文を必要時だけ読むようにしても、Skill Registry自体が�
 
 この実装で最優先するのは次です。
 
-### Canonical sourceを唯一のAuthorityにする
+### 正規の情報源を一つに決める
 
-Generated Indexは候補発見用です。
+生成したIndexは、候補を見つけるためだけに使います。
 
 ```text
-generated index != source of truth
+生成Index ≠ 正本（Source of Truth）
 ```
 
-Indexと正規Registryが矛盾した場合は、必ず正規Registryを優先します。
+Indexと正規Registryが食い違った場合は、必ず正規Registryを正しいものとして扱います。
 
-### staleなら使わない
+### 元データより古いIndexは使わない
 
 Index生成時のsource revisionを保存します。
 
-現在のsourceと一致しなければ、Indexを破棄してfull Registryへfallbackします。
+現在の元データと一致しなければ、そのIndexは使わず、正規Registryの全文を読む経路へ戻ります。
 
-### ambiguousならfull Registryへ戻る
+### 候補を絞れない場合はRegistry全文へ戻る
 
-Compact Indexだけで必要Skill集合を閉じられない場合、無理に推測しません。
+軽量Indexだけで必要なSkill集合を確定できない場合は、無理に推測しません。
 
-### task-critical Skill本文は別問題
+### そのタスクに必須のSkill本文は別に扱う
 
-候補選択をcompact化しても、選ばれたSkill本文のSafety / completion / fallback等を落とさないよう、最初は全文取得を維持します。
+候補選択を軽量化しても、選ばれたSkill本文にある安全上の制約、完了条件、問題が起きたときの戻り先などを落とさないよう、最初は本文を全文読みます。
 
 ---
 
@@ -97,17 +97,17 @@ agent/
 
 役割は明確に分けます。
 
-| File | Role |
+| ファイル | 役割 |
 | --- | --- |
-| `skills.yaml` | canonical Skill routing authority |
-| `memory.yaml` | canonical Memory routing authority |
-| `routing.min.json` | runtime candidate selection |
-| `catalog.json` | human / debug / inspection |
-| Skill / Memory Markdown | canonical body |
+| `skills.yaml` | Skill Routingの正本 |
+| `memory.yaml` | Memory Routingの正本 |
+| `routing.min.json` | 実行時の候補選択 |
+| `catalog.json` | 人間による確認・デバッグ |
+| Skill / Memory Markdown | 正規の本文 |
 
 ---
 
-## 4. Canonical Skill Registry
+## 4. 正規のSkill Registry
 
 例:
 
@@ -159,7 +159,7 @@ entries:
 
 ---
 
-## 5. Runtime Index schema
+## 5. 実行時用Indexのスキーマ
 
 Skill側:
 
@@ -209,9 +209,9 @@ Memory側:
 }
 ```
 
-### なぜtupleにするか
+### なぜ配列形式（tuple）にするか
 
-次のようなpretty objectは読みやすいですが、runtime用途ではfield nameが毎entry重複します。
+次のように整形したobjectは人間には読みやすい一方、実行時用途ではフィールド名が項目ごとに繰り返されます。
 
 ```json
 {
@@ -222,11 +222,11 @@ Memory側:
 }
 ```
 
-Runtime fileは機械向けなので、schemaを先頭に一度だけ置いてtuple化します。
+実行時用ファイルは機械が読むためのものなので、スキーマを先頭に一度だけ置き、各項目はtupleで持ちます。
 
 ---
 
-## 6. Git blob SHAでfreshnessを見る
+## 6. Git blob SHAでIndexの鮮度を確認する
 
 Git blob SHA-1:
 
@@ -253,7 +253,7 @@ Index生成時:
 sourceSHA := GitBlobSHA(registryBytes)
 ```
 
-Runtime:
+実行時:
 
 ```go
 func CanUseIndex(indexSHA, currentSHA string) bool {
@@ -261,11 +261,11 @@ func CanUseIndex(indexSHA, currentSHA string) bool {
 }
 ```
 
-一致しなければfallbackします。
+一致しなければ正規Registryへ戻ります。
 
 ---
 
-## 7. Candidate routing
+## 7. 候補となるSkillを選ぶ
 
 最小Router:
 
@@ -301,19 +301,19 @@ func Match(task string, skills []SkillTuple) []SkillTuple {
 
 ```text
 routing.min
-  ↓ candidate
-canonical registry range
-  ↓ composition / dependency / forced rule
-required closure
+  ↓ 候補を絞る
+正規Registryの該当範囲
+  ↓ Composition / 依存関係 / 強制適用Ruleを確認
+必要なSkill集合を確定
   ↓
-canonical Skill bodies
+正規のSkill本文
 ```
 
-Compact Indexだけで最終決定しないことが重要です。
+軽量Indexだけで最終決定しないことが重要です。
 
 ---
 
-## 8. Canonical line rangeを使う
+## 8. 正規Registryの行範囲を使う
 
 Indexにpathまで複製せず、Registry上のentry範囲だけ保存できます。
 
@@ -327,7 +327,7 @@ skills:
                   ← 15
 ```
 
-Candidateが `research` なら2〜8行だけ取り直します。
+候補が `research` なら、正規Registryの2〜8行だけを読み直します。
 
 そこで初めて、
 
@@ -336,27 +336,27 @@ Candidateが `research` なら2〜8行だけ取り直します。
 - status
 - provides
 - requires
-- canonical metadata
+- 正規のメタデータ
 
 等を読みます。
 
 ---
 
-## 9. Fallback matrix
+## 9. 正規Registryへ戻る条件
 
 最低限、次を決めておきます。
 
 | Condition | Action |
 | --- | --- |
-| Index missing | full Registry |
-| invalid JSON | full Registry |
-| source SHA mismatch | full Registry |
-| no candidate | full Registry or normal search |
-| multiple ambiguous candidates | canonical Registry |
-| high-risk Task | canonical required closure |
-| schema unknown | full Registry |
+| Indexがない | 正規Registry全文を読む |
+| JSONが壊れている | 正規Registry全文を読む |
+| 元データのSHAが一致しない | 正規Registry全文を読む |
+| 候補が見つからない | 正規Registry全文、または通常検索へ戻る |
+| 候補を一つに絞れない | 正規Registryで確認する |
+| 高リスクなタスク | 正規Registryで必要なSkill集合を確定する |
+| 未対応のschema | 正規Registry全文を読む |
 
-Pseudo code:
+疑似コード:
 
 ```go
 func Route(task string) Result {
@@ -384,9 +384,9 @@ func Route(task string) Result {
 
 ---
 
-## 10. RuntimeとInspectionを分離する
+## 10. 実行時用と確認・デバッグ用を分離する
 
-最初の実装では、debugに便利な情報をRuntime JSONへ入れすぎました。
+最初の実装では、デバッグに便利な情報まで実行時用JSONへ入れすぎました。
 
 結果:
 
@@ -434,13 +434,13 @@ Memory側は:
 
 ---
 
-## 11. size regressionを入れる
+## 11. Indexの肥大化を回帰テストで検出する
 
-Runtime Indexが少しずつ肥大化しないようにします。
+実行時用Indexが少しずつ肥大化しないようにします。
 
 ```go
 func ValidateCompact(runtime, canonical []byte) error {
-    // 70%未満を構造的なRegression gateとして使う例
+    // 70%未満をサイズの回帰テスト条件として使う例
     if len(runtime)*10 >= len(canonical)*7 {
         return fmt.Errorf(
             "runtime index too large: runtime=%d canonical=%d",
@@ -454,7 +454,7 @@ func ValidateCompact(runtime, canonical []byte) error {
 
 70%に一般的な意味はありません。
 
-自分のHarnessで「このIndexを入れる価値がある」と言える上限を決めます。
+自分のAgent Harnessで「このIndexを入れる価値がある」と言える上限を決めます。
 
 ---
 
@@ -498,19 +498,26 @@ jobs:
         run: git diff --exit-code -- .ai-index/
 ```
 
-Mainでgenerated fileを自動commitするなら、push直前にmainが進んでいないか確認してください。
+mainで生成ファイルを自動commitするなら、push直前にmainブランチが先へ進んでいないか確認してください。
 
-古いcheckoutが新しいcanonical stateを上書きしないためです。
+古いcheckoutから作った生成物が、新しい正規データを上書きしないためです。
 
 ---
 
-# Living Roadmap
+# 見直せる改善ロードマップ
 
 ここからは、このIndexをどう育てるかです。
 
-自己改善Featureを固定Roadmapで管理すると、実測で前提が外れてもPhaseを完走しがちです。
+自己改善の機能を固定ロードマップで管理すると、実測で前提が外れても、決めた段階を最後まで消化しがちです。
 
-そこでFeatureごとに次を持たせます。
+そこで、判断に迷う改善項目には次の情報を持たせます。
+
+YAMLのキー名は英語ですが、意味は次のとおりです。
+
+- `next_probe`: 次に何を確認するか
+- `promotion_criteria`: 次へ進めるか判断する条件
+- `demotion_criteria`: 一段戻す、または止めるか判断する条件
+- `replan_triggers`: 計画そのものを作り直すきっかけ
 
 ```yaml
 core_reasoning_index:
@@ -549,42 +556,42 @@ core_reasoning_index:
     architecture_changed: redesign
 ```
 
-## 重要: promotion criteriaは自動昇格条件ではない
+## 重要: 「進める条件」は自動昇格のスイッチではない
 
-条件を満たしたらstableに自動変更する、という意味ではありません。
+条件を満たしたら自動的に `stable` へ変更する、という意味ではありません。
 
 ```text
-criteria satisfied
+条件を満たす
   ↓
-now there is enough evidence to reconsider promotion
+次へ進めるか再判断できるだけの根拠が揃う
 ```
 
 です。
 
-環境が変わっていれば、Featureを閉じる判断もできます。
+環境が変わっていれば、その機能を終了する判断もできます。
 
 ---
 
-## Roadmap replanの実例
+## ロードマップを見直した実例
 
 今回、最初のIndexは正しく動きました。
 
 しかし27,103文字ありました。
 
-これは設計時に想定した削減より弱かったため、次Phaseへ進まず、現在Phaseそのものを再設計しました。
+これは設計時に想定した削減より弱かったため、次の段階へ進まず、現在の段階そのものを再設計しました。
 
 ```text
-initial implementation
+初期実装
   ↓
-measure
+実測
   ↓
-goal gap detected
+目的との差を確認
   ↓
-replan
+計画を見直す
   ↓
-split runtime / inspection
+実行時用と確認用を分離
   ↓
-measure again
+再度実測
 ```
 
 結果:
@@ -593,9 +600,9 @@ measure again
 27,103 → 10,657 chars
 ```
 
-ここで重要なのは、Featureを完成させることがGoalではなかった点です。
+ここで重要なのは、その機能を完成させること自体が目的ではなかった点です。
 
-Goalは、
+目的は、
 
 > AIを使いやすく、高性能にする
 
@@ -605,38 +612,38 @@ Goalは、
 
 # 他のAIへ渡す実装指示
 
-別のAI Agentへこの方式を実装させる場合、次をそのままTask Contractとして渡せます。
+別のAIエージェントへこの方式を実装させる場合、次をそのまま実装契約（Task Contract）として渡せます。
 
 ```yaml
 objective:
-  - canonical Skill/Memory authorityを維持する
-  - first-read routing surfaceを小さくする
+  - 正規のSkill / Memoryを唯一の正しい情報源として維持する
+  - Routing時に最初に読む情報量を小さくする
 
 deliverables:
-  - deterministic generator
+  - 同じ入力から同じ結果を出すgenerator
   - skills/routing.min.json
   - memory/routing.min.json
-  - verbose inspection catalogs
-  - freshness validator
-  - stale/ambiguous fallback
+  - 確認・デバッグ用の詳細Catalog
+  - 生成元との一致を確認するvalidator
+  - Indexが古い、または候補を絞れない場合の戻り先
   - CI
-  - size regression
-  - rollout roadmap
+  - サイズの回帰テスト
+  - 段階的な導入計画
 
 constraints:
-  - generated index is never authority
-  - source revision must be verifiable
-  - no silent stale usage
-  - task-critical Skill body behavior must not be weakened in v1
-  - no vector DB required for v1
+  - 生成Indexを正本にしない
+  - 生成元のrevisionを検証できるようにする
+  - 古いIndexを黙って使わない
+  - v1では、そのタスクに必須のSkill本文の読み方を弱めない
+  - v1ではVector DBを必須にしない
 
 verification:
-  - generator deterministic
-  - stale source detected
-  - invalid index falls back
-  - candidate returns to canonical registry
-  - runtime index materially smaller than source
-  - existing routing regression suite still passes
+  - generatorが同じ入力から同じ結果を出す
+  - 元データとの差分を検出できる
+  - 壊れたIndexなら正規Registryへ戻る
+  - 候補を見つけた後に正規Registryへ戻る
+  - 実行時用Indexが元データより十分小さい
+  - 既存のRouting回帰テストが通る
 
 rollout:
   skill_routing: limited_live
@@ -649,30 +656,30 @@ rollout:
 次を勝手に最適化しないよう明示してください。
 
 - Indexを正本に変えない
-- Canonical pathを削除しない
-- stale時に推測で継続しない
-- compact化のついでにSkill本文まで部分読みしない
-- token削減をcorrectnessより上位に置かない
-- debug catalogをruntime first-readへ戻さない
+- 正規データへのpathを削除しない
+- Indexが古い場合に推測で処理を続けない
+- Indexの軽量化と同時に、Skill本文まで勝手に部分読みへ変えない
+- Token削減を正しさより優先しない
+- デバッグ用Catalogを、実行時に最初から読ませない
 
 ---
 
-# Acceptance
+# 完了条件
 
 実装完了は次で判定できます。
 
-- [ ] canonical Registryが残っている
-- [ ] generated Indexが再生成可能
-- [ ] source SHAを比較できる
-- [ ] stale時にfallbackする
-- [ ] ambiguous時にfallbackする
-- [ ] candidateからcanonical entryへ戻れる
-- [ ] required Skill closureを既存Routerで確定する
-- [ ] task-critical bodyのSafety / completion contractを落としていない
-- [ ] runtimeとinspectionが分離されている
-- [ ] size regressionがある
+- [ ] 正規Registryが残っている
+- [ ] 生成したIndexを正規データから再生成できる
+- [ ] 生成元のSHAを比較できる
+- [ ] Indexが古い場合は正規Registryへ戻る
+- [ ] 候補を一つに絞れない場合は正規Registryへ戻る
+- [ ] 候補から正規Registryのentryへ戻れる
+- [ ] 必要なSkill集合を既存Routerで確定できる
+- [ ] そのタスクに必須のSkill本文から、安全条件や完了条件を落としていない
+- [ ] 実行時用と確認・デバッグ用が分離されている
+- [ ] サイズの回帰テストがある
 - [ ] CIが通る
-- [ ] Featureにnext_probe / promotion / demotion / replan条件がある
+- [ ] 判断が難しい改善項目に、次の観測・進める条件・戻す条件・計画を見直す条件がある
 
 ---
 
@@ -680,12 +687,12 @@ rollout:
 
 この方式が向くのは、検索対象にすでに構造がある場合です。
 
-- explicit ID
-- trigger
-- section
-- canonical registry
-- stable source files
-- deterministic generation
+- 明示的なID
+- 検索用trigger
+- section構造
+- 正規Registry
+- 安定して参照できる元ファイル
+- 同じ入力から同じ結果を生成できること
 
 逆に、自然文だけが大量にあり、概念上の近さで横断検索したいならEmbedding / Vector Searchが強くなります。
 
@@ -701,7 +708,7 @@ Semantic Search if needed
 Canonical Source
 ```
 
-重要なのは、検索方式よりSource of Truthを先に決めることです。
+重要なのは、検索方式を決める前に、どのデータを正本（Source of Truth）とするか決めておくことです。
 
 ---
 
@@ -717,29 +724,29 @@ AIエージェントが大きくなると、問題は「知識が足りない」
 
 も必要になります。
 
-Compact Reasoning Indexは前者を扱います。
+軽量Reasoning Indexは前者を扱います。
 
-Living Roadmapは後者を扱います。
+見直せる改善ロードマップは後者を扱います。
 
 この二つを組み合わせると、
 
 ```text
-small discovery
+小さな索引で候補を絞る
   ↓
-canonical truth
+正本で確認する
   ↓
-execution
+実行する
   ↓
-measurement
+結果を測る
   ↓
-keep / promote / demote / redesign
+維持 / 進める / 戻す / 再設計
 ```
 
 という循環を作れます。
 
 私にとって今回の改善で一番価値があったのは、Indexを作ったことではありません。
 
-**実測が弱かったとき、自分で作ったRoadmapを捨てる仕組みが、その場で実際に働いたこと**でした。
+**実測が想定を下回ったとき、自分で作ったロードマップを捨てて設計を組み直す仕組みが、その場で実際に働いたこと**でした。
 
 ## 関連記事
 
