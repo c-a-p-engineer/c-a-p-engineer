@@ -1,4 +1,4 @@
-# AIエージェントのRoutingを軽量化するReasoning Indexと、計画を捨てられるLiving Roadmap
+# AIエージェントのRoutingを軽量化するReasoning Indexと、見直せる改善ロードマップ
 
 AIエージェントへSkill、Memory、Ruleを追加していくと、知識量だけでなく「何を読むか決めるための情報」も増えます。
 
@@ -6,12 +6,12 @@ AIエージェントへSkill、Memory、Ruleを追加していくと、知識量
 
 1. **Compact Reasoning Index**  
    大きなSkill / Memory Registryを毎回全文展開せず、候補選択だけを小さな派生Indexで行う。
-2. **Living Roadmap**  
-   自己改善Featureを固定Phaseで完走せず、実測やModel / Host / Toolの変化で計画そのものを再導出する。
+2. **見直せる改善ロードマップ**  
+   自己改善の機能を固定Phaseどおりに消化するのではなく、実測結果やModel / Host / Toolの変化に応じて、計画そのものを組み直す。
 
-実運用では、Skill routing surfaceを **38,533文字 → 10,657文字（72.3%減）**、Memory routing surfaceを **33,301文字 → 6,678文字（79.9%減）** まで縮小しました。
+実運用では、Routing時に最初に読む情報量を、Skill側で **38,533文字 → 10,657文字（72.3%減）**、Memory側で **33,301文字 → 6,678文字（79.9%減）** まで減らしました。
 
-この数字はtokenやlatencyの改善率ではありません。静的なrouting inputの文字数比較です。
+この数字は、Token数やLatencyが同じ割合で改善したという意味ではありません。比較しているのは、Routing時に最初に読むテキストの文字数です。
 
 ---
 
@@ -45,29 +45,29 @@ Skill本文を必要時だけ読むようにしても、Skill Registry自体が�
 
 この実装で最優先するのは次です。
 
-### Canonical sourceを唯一のAuthorityにする
+### 正規の情報源を一つに決める
 
-Generated Indexは候補発見用です。
+生成したIndexは、候補を見つけるためだけに使います。
 
 ```text
 generated index != source of truth
 ```
 
-Indexと正規Registryが矛盾した場合は、必ず正規Registryを優先します。
+Indexと正規Registryが食い違った場合は、必ず正規Registryを正しいものとして扱います。
 
-### staleなら使わない
+### 元データより古いIndexは使わない
 
 Index生成時のsource revisionを保存します。
 
-現在のsourceと一致しなければ、Indexを破棄してfull Registryへfallbackします。
+現在の元データと一致しなければ、そのIndexは使わず、正規Registryの全文を読む経路へ戻ります。
 
-### ambiguousならfull Registryへ戻る
+### 候補を絞れない場合はRegistry全文へ戻る
 
 Compact Indexだけで必要Skill集合を閉じられない場合、無理に推測しません。
 
-### task-critical Skill本文は別問題
+### そのTaskに必須のSkill本文は別に扱う
 
-候補選択をcompact化しても、選ばれたSkill本文のSafety / completion / fallback等を落とさないよう、最初は全文取得を維持します。
+候補選択を軽量化しても、選ばれたSkill本文にある安全上の制約、完了条件、問題が起きたときの戻り先などを落とさないよう、最初は本文を全文読みます。
 
 ---
 
@@ -99,15 +99,15 @@ agent/
 
 | File | Role |
 | --- | --- |
-| `skills.yaml` | canonical Skill routing authority |
-| `memory.yaml` | canonical Memory routing authority |
-| `routing.min.json` | runtime candidate selection |
-| `catalog.json` | human / debug / inspection |
-| Skill / Memory Markdown | canonical body |
+| `skills.yaml` | Skill Routingの正本 |
+| `memory.yaml` | Memory Routingの正本 |
+| `routing.min.json` | 実行時の候補選択 |
+| `catalog.json` | 人間による確認・デバッグ |
+| Skill / Memory Markdown | 正規の本文 |
 
 ---
 
-## 4. Canonical Skill Registry
+## 4. 正規のSkill Registry
 
 例:
 
@@ -159,7 +159,7 @@ entries:
 
 ---
 
-## 5. Runtime Index schema
+## 5. 実行時用Indexのschema
 
 Skill側:
 
@@ -211,7 +211,7 @@ Memory側:
 
 ### なぜtupleにするか
 
-次のようなpretty objectは読みやすいですが、runtime用途ではfield nameが毎entry重複します。
+次のように整形したobjectは人間には読みやすい一方、実行時用途ではfield名がentryごとに繰り返されます。
 
 ```json
 {
@@ -222,7 +222,7 @@ Memory側:
 }
 ```
 
-Runtime fileは機械向けなので、schemaを先頭に一度だけ置いてtuple化します。
+実行時用ファイルは機械が読むためのものなので、schemaを先頭に一度だけ置き、各entryはtupleで持ちます。
 
 ---
 
@@ -253,7 +253,7 @@ Index生成時:
 sourceSHA := GitBlobSHA(registryBytes)
 ```
 
-Runtime:
+実行時:
 
 ```go
 func CanUseIndex(indexSHA, currentSHA string) bool {
@@ -261,11 +261,11 @@ func CanUseIndex(indexSHA, currentSHA string) bool {
 }
 ```
 
-一致しなければfallbackします。
+一致しなければ正規Registryへ戻ります。
 
 ---
 
-## 7. Candidate routing
+## 7. 候補となるSkillを選ぶ
 
 最小Router:
 
@@ -313,7 +313,7 @@ Compact Indexだけで最終決定しないことが重要です。
 
 ---
 
-## 8. Canonical line rangeを使う
+## 8. 正規Registryの行範囲を使う
 
 Indexにpathまで複製せず、Registry上のentry範囲だけ保存できます。
 
@@ -327,7 +327,7 @@ skills:
                   ← 15
 ```
 
-Candidateが `research` なら2〜8行だけ取り直します。
+候補が `research` なら、正規Registryの2〜8行だけを読み直します。
 
 そこで初めて、
 
@@ -336,25 +336,25 @@ Candidateが `research` なら2〜8行だけ取り直します。
 - status
 - provides
 - requires
-- canonical metadata
+- 正規のmetadata
 
 等を読みます。
 
 ---
 
-## 9. Fallback matrix
+## 9. 正規Registryへ戻る条件
 
 最低限、次を決めておきます。
 
 | Condition | Action |
 | --- | --- |
-| Index missing | full Registry |
-| invalid JSON | full Registry |
-| source SHA mismatch | full Registry |
-| no candidate | full Registry or normal search |
-| multiple ambiguous candidates | canonical Registry |
-| high-risk Task | canonical required closure |
-| schema unknown | full Registry |
+| Indexがない | 正規Registry全文を読む |
+| JSONが壊れている | 正規Registry全文を読む |
+| 元データのSHAが一致しない | 正規Registry全文を読む |
+| 候補が見つからない | 正規Registry全文、または通常検索へ戻る |
+| 候補を一つに絞れない | 正規Registryで確認する |
+| 高リスクTask | 正規Registryで必要Skill集合を確定する |
+| 未対応のschema | 正規Registry全文を読む |
 
 Pseudo code:
 
@@ -384,9 +384,9 @@ func Route(task string) Result {
 
 ---
 
-## 10. RuntimeとInspectionを分離する
+## 10. 実行時用と確認・デバッグ用を分離する
 
-最初の実装では、debugに便利な情報をRuntime JSONへ入れすぎました。
+最初の実装では、デバッグに便利な情報まで実行時用JSONへ入れすぎました。
 
 結果:
 
@@ -436,7 +436,7 @@ Memory側は:
 
 ## 11. size regressionを入れる
 
-Runtime Indexが少しずつ肥大化しないようにします。
+実行時用Indexが少しずつ肥大化しないようにします。
 
 ```go
 func ValidateCompact(runtime, canonical []byte) error {
@@ -498,19 +498,19 @@ jobs:
         run: git diff --exit-code -- .ai-index/
 ```
 
-Mainでgenerated fileを自動commitするなら、push直前にmainが進んでいないか確認してください。
+mainで生成ファイルを自動commitするなら、push直前にmainブランチが先へ進んでいないか確認してください。
 
-古いcheckoutが新しいcanonical stateを上書きしないためです。
+古いcheckoutから作った生成物が、新しい正規データを上書きしないためです。
 
 ---
 
-# Living Roadmap
+# 見直せる改善ロードマップ
 
 ここからは、このIndexをどう育てるかです。
 
-自己改善Featureを固定Roadmapで管理すると、実測で前提が外れてもPhaseを完走しがちです。
+自己改善の機能を固定ロードマップで管理すると、実測で前提が外れても、決めたPhaseを最後まで消化しがちです。
 
-そこでFeatureごとに次を持たせます。
+そこで、判断に迷う改善項目には次の情報を持たせます。
 
 ```yaml
 core_reasoning_index:
@@ -549,7 +549,7 @@ core_reasoning_index:
     architecture_changed: redesign
 ```
 
-## 重要: promotion criteriaは自動昇格条件ではない
+## 重要: 「進める条件」は自動昇格のスイッチではない
 
 条件を満たしたらstableに自動変更する、という意味ではありません。
 
@@ -561,11 +561,11 @@ now there is enough evidence to reconsider promotion
 
 です。
 
-環境が変わっていれば、Featureを閉じる判断もできます。
+環境が変わっていれば、その機能を終了する判断もできます。
 
 ---
 
-## Roadmap replanの実例
+## ロードマップを見直した実例
 
 今回、最初のIndexは正しく動きました。
 
@@ -593,9 +593,9 @@ measure again
 27,103 → 10,657 chars
 ```
 
-ここで重要なのは、Featureを完成させることがGoalではなかった点です。
+ここで重要なのは、その機能を完成させること自体が目的ではなかった点です。
 
-Goalは、
+目的は、
 
 > AIを使いやすく、高性能にする
 
@@ -649,30 +649,30 @@ rollout:
 次を勝手に最適化しないよう明示してください。
 
 - Indexを正本に変えない
-- Canonical pathを削除しない
-- stale時に推測で継続しない
+- 正規データへのpathを削除しない
+- Indexが古い場合に推測で処理を続けない
 - compact化のついでにSkill本文まで部分読みしない
 - token削減をcorrectnessより上位に置かない
-- debug catalogをruntime first-readへ戻さない
+- デバッグ用Catalogを、実行時に最初から読ませない
 
 ---
 
-# Acceptance
+# 完了条件
 
 実装完了は次で判定できます。
 
-- [ ] canonical Registryが残っている
-- [ ] generated Indexが再生成可能
+- [ ] 正規Registryが残っている
+- [ ] 生成したIndexを正規データから再生成できる
 - [ ] source SHAを比較できる
-- [ ] stale時にfallbackする
-- [ ] ambiguous時にfallbackする
-- [ ] candidateからcanonical entryへ戻れる
+- [ ] Indexが古い場合は正規Registryへ戻る
+- [ ] 候補を一つに絞れない場合は正規Registryへ戻る
+- [ ] 候補から正規Registryのentryへ戻れる
 - [ ] required Skill closureを既存Routerで確定する
-- [ ] task-critical bodyのSafety / completion contractを落としていない
-- [ ] runtimeとinspectionが分離されている
+- [ ] そのTaskに必須のSkill本文から、安全条件や完了条件を落としていない
+- [ ] 実行時用と確認・デバッグ用が分離されている
 - [ ] size regressionがある
 - [ ] CIが通る
-- [ ] Featureにnext_probe / promotion / demotion / replan条件がある
+- [ ] 判断が難しい改善項目に、次の観測・進める条件・戻す条件・計画を見直す条件がある
 
 ---
 
@@ -683,7 +683,7 @@ rollout:
 - explicit ID
 - trigger
 - section
-- canonical registry
+- 正規Registry
 - stable source files
 - deterministic generation
 
@@ -701,7 +701,7 @@ Semantic Search if needed
 Canonical Source
 ```
 
-重要なのは、検索方式よりSource of Truthを先に決めることです。
+重要なのは、検索方式を決める前に、どのデータを正本（Source of Truth）とするか決めておくことです。
 
 ---
 
@@ -719,7 +719,7 @@ AIエージェントが大きくなると、問題は「知識が足りない」
 
 Compact Reasoning Indexは前者を扱います。
 
-Living Roadmapは後者を扱います。
+見直せる改善ロードマップは後者を扱います。
 
 この二つを組み合わせると、
 
@@ -739,7 +739,7 @@ keep / promote / demote / redesign
 
 私にとって今回の改善で一番価値があったのは、Indexを作ったことではありません。
 
-**実測が弱かったとき、自分で作ったRoadmapを捨てる仕組みが、その場で実際に働いたこと**でした。
+**実測が想定を下回ったとき、自分で作ったロードマップを捨てて設計を組み直す仕組みが、その場で実際に働いたこと**でした。
 
 ## 関連記事
 
