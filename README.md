@@ -171,6 +171,7 @@
       <sub>DEVELOPMENT LOG</sub>
       <h3><a href="https://c-a-p-engineer.github.io/">こぴぺたんログ</a></h3>
       <p>開発、生成AI、自動化、失敗と改善を、再利用できる知識として記録しています。</p>
+      <p><a href="./articles/ai-agent-reasoning-index-and-living-roadmap.md"><strong>AI Agent Routing Index / Living Roadmap →</strong></a></p>
     </td>
     <td width="50%" valign="top">
       <sub>TECHNICAL BOOKS</sub>
