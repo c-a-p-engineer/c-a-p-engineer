@@ -4,7 +4,7 @@ AIエージェントへSkill、Memory、Ruleを追加していくと、知識量
 
 この文書は、次の二つを再現できる形でまとめた実装ノートです。
 
-1. **Compact Reasoning Index**  
+1. **軽量Reasoning Index（Compact Reasoning Index）**  
    大きなSkill / Memory Registryを毎回全文展開せず、候補選択だけを小さな派生Indexで行う。
 2. **見直せる改善ロードマップ**  
    自己改善の機能を固定Phaseどおりに消化するのではなく、実測結果やModel / Host / Toolの変化に応じて、計画そのものを組み直す。
@@ -63,7 +63,7 @@ Index生成時のsource revisionを保存します。
 
 ### 候補を絞れない場合はRegistry全文へ戻る
 
-Compact Indexだけで必要Skill集合を閉じられない場合、無理に推測しません。
+軽量Indexだけで必要なSkill集合を確定できない場合は、無理に推測しません。
 
 ### そのTaskに必須のSkill本文は別に扱う
 
@@ -309,7 +309,7 @@ required closure
 canonical Skill bodies
 ```
 
-Compact Indexだけで最終決定しないことが重要です。
+軽量Indexだけで最終決定しないことが重要です。
 
 ---
 
@@ -651,7 +651,7 @@ rollout:
 - Indexを正本に変えない
 - 正規データへのpathを削除しない
 - Indexが古い場合に推測で処理を続けない
-- compact化のついでにSkill本文まで部分読みしない
+- Indexの軽量化と同時に、Skill本文まで勝手に部分読みへ変えない
 - token削減をcorrectnessより上位に置かない
 - デバッグ用Catalogを、実行時に最初から読ませない
 
@@ -717,7 +717,7 @@ AIエージェントが大きくなると、問題は「知識が足りない」
 
 も必要になります。
 
-Compact Reasoning Indexは前者を扱います。
+軽量Reasoning Indexは前者を扱います。
 
 見直せる改善ロードマップは後者を扱います。
 
