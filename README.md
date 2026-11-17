@@ -28,6 +28,15 @@
 
 <br />
 
+## BOOK / 商業出版
+
+**[実践AI駆動開発 ― 壊れにくいコードを生むための設計者思考](https://nextpublishing.jp/book/19913.html)**  
+インプレス NextPublishing（技術の泉シリーズ）より刊行。AIによるコード生成を実務に取り入れる際の、要件定義・設計・レビュー・運用での判断基準を、具体例とともに解説しています。
+
+[出版社公式ページ・販売ストアを見る →](https://nextpublishing.jp/book/19913.html)
+
+<br />
+
 ## 01 / What I build
 
 <table>
