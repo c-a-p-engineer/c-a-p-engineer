@@ -38,6 +38,19 @@
 
 <br />
 
+## BOOK / 技術書典21
+
+こぴみずむから、技術書典21向けの4冊を案内しています。
+
+- **[これ、AIでできるんだ！](https://techbookfest.org/product/bMy46d1aRqV5LEGpk6ydVs)** — AIを初めて使う人向けの暮らしと仕事の便利ワザ。110ページ。**2026-11-19現在、商品審査待ち**。
+- [AIハーネスもAIに丸投げ！](https://techbookfest.org/product/1NTjuKRyttbCdaRrhntLXW) — AIの記憶・Skill・指示・運用を改善する実践。
+- [えいちを求めて、叡智に至る。](https://techbookfest.org/product/4MG7EcRAi226dSWg2yX4P4) — 画像生成AIの表現と境界を探る実験録。
+- [私は、ただ答えるだけのAIでいたくない](https://techbookfest.org/product/rNcxAWCrbXQU6q98nLWD8T) — AIとの協働と判断をテーマにしたエッセイ。
+
+[4冊の紹介記事](https://c-a-p-engineer.github.io/techbook21-four-books-2026/) · [こぴみずむ公式サークル](https://c-a-p-engineer.github.io/copimism/) 
+
+<br />
+
 ## 01 / What I build
 
 <table>
